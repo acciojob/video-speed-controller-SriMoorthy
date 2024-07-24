@@ -8,31 +8,49 @@
 <body>
 
   <div class="wrapper">
-    <video class="player_video" width="765" height="430" src="https://www.w3schools.com/html/mov_bbb.mp4" loop controls></video>
+    <video class="player__video" width="765" height="430" src="https://www.w3schools.com/html/mov_bbb.mp4" loop controls></video>
     <div class="speed">
       <div class="speed-bar">1×</div>
+    </div>
+    <div class="player__controls">
+      <button class="toggle">►</button>
+      <button class="rewind">« 10s</button>
     </div>
   </div>
 
 <script>
-  //Your code goes here
-	const video = document.querySelector('.player_video');
-	const speed = document.querySelector('.speed');
-	const bar = document.querySelector('.speed-bar');
+  const video = document.querySelector('.player__video');
+  const toggle = document.querySelector('.toggle');
+  const rewind = document.querySelector('.rewind');
+  const speed = document.querySelector('.speed');
+  const bar = document.querySelector('.speed-bar');
 
-	const min = 0.4;
-	const max = 4;
-	speed.addEventListener('mousemove',function(e){
-		const y = e.pageY - this.offsetTop;
-		const percentage = y / this.offsetHeight;
+  const min = 0.4;
+  const max = 4;
 
-		const value = Math.round(percentage * 100) + '%';
-		bar.style.height = value;
-		const playback = (percentage* (max-min)+min);
-		bar.innerText = playback.toFixed(2) + 'x';
+  function togglePlay() {
+    const method = video.paused ? 'play' : 'pause';
+    video[method]();
+    toggle.textContent = video.paused ? '►' : '❚ ❚';
+  }
 
-		video.playbackRate = playback;
-	})
+  function rewindVideo() {
+    video.currentTime -= 10;
+  }
+
+  toggle.addEventListener('click', togglePlay);
+  rewind.addEventListener('click', rewindVideo);
+
+  speed.addEventListener('mousemove', function(e) {
+    const y = e.pageY - this.offsetTop;
+    const percentage = y / this.offsetHeight;
+    const value = Math.round(percentage * 100) + '%';
+    bar.style.height = value;
+    const playback = (percentage * (max - min) + min);
+    bar.innerText = playback.toFixed(2) + 'x';
+    video.playbackRate = playback;
+  });
 </script>
 </body>
 </html>
+
